@@ -1,0 +1,70 @@
+/* Classic v1 conversation geometry layered on top of the v2 post contract. */
+#conversationPosts .post { box-sizing:border-box; transition:padding .15s ease; }
+#conversationPosts .post.side-l { padding-left:79px; padding-right:0; }
+#conversationPosts .post.side-r { padding-left:0; padding-right:79px; }
+#conversationPosts .post.side-none { padding-left:0; padding-right:0; }
+
+#conversationPosts .post.side-l > .avatar { float:left; margin-left:-70px; margin-right:0; }
+#conversationPosts .post.side-r > .avatar { float:right; margin-left:0; margin-right:-70px; }
+#conversationPosts .post.side-none > .avatar { display:none !important; }
+
+/* Keep the avatar inside the coloured profile strip instead of touching the post edge. */
+#conversationPosts .post.side-l > .avatar,
+#conversationPosts .post.side-r > .avatar {
+  border-radius:3px !important;
+  position:relative;
+  z-index:2;
+}
+
+#conversationPosts .post.side-r .postHeader { padding-left:10px; padding-right:15px; }
+#conversationPosts .post.side-l .postHeader { padding-left:15px; padding-right:10px; }
+#conversationPosts .post.side-r .postHeader .controls { float:left; }
+#conversationPosts .post.side-l .postHeader .controls { float:right; }
+
+/* Mirror the speech-bubble pointer for the right-hand column. */
+#conversationPosts .post.side-r .postContent:before,
+#conversationPosts .post.side-r .postContent:after { left:auto; transform:rotate(180deg); }
+#conversationPosts .post.side-r .postContent:before { right:-16px; }
+#conversationPosts .post.side-r .postContent:after { right:-15px; }
+#conversationPosts .post.side-none .postContent:before,
+#conversationPosts .post.side-none .postContent:after { display:none; }
+
+/* Consecutive posts from one author read as one visual group. */
+#conversationPosts .post.group-middle { margin-bottom:3px; }
+#conversationPosts .post.group-middle .postContent { border-radius:3px; }
+#conversationPosts .post.group-start:not(.group-end) { margin-bottom:3px; }
+#conversationPosts .post.group-start:not(.group-end) .postContent { border-bottom-left-radius:2px; border-bottom-right-radius:2px; }
+#conversationPosts .post.group-end:not(.group-start) { margin-top:3px; }
+#conversationPosts .post.group-end:not(.group-start) .postContent { border-top-left-radius:2px; border-top-right-radius:2px; }
+#conversationPosts .post.group-middle .postHeader { padding-top:5px; padding-bottom:5px; }
+#conversationPosts .post.group-middle .postBody { padding-top:3px; }
+
+#conversationPosts .post.classic-reply { margin-top:24px; }
+#conversationPosts .post.classic-reply .postContent { box-shadow:0 0 0 2px rgba(54,65,89,.12); }
+
+/* The old layout is still usable on phones: preserve side identity without horizontal overflow. */
+@media (max-width:700px) {
+  #conversationPosts .post.side-l { padding-left:42px; }
+  #conversationPosts .post.side-r { padding-right:42px; }
+  #conversationPosts .post.side-l > .avatar { margin-left:-34px; }
+  #conversationPosts .post.side-r > .avatar { margin-right:-34px; }
+  #conversationPosts .post.side-l > .avatar,
+  #conversationPosts .post.side-r > .avatar { border-radius:3px !important; }
+  #conversationPosts .post .avatar { width:34px; height:34px; line-height:34px; font-size:16px; }
+  #conversationPosts .post.side-r .postHeader .controls,
+  #conversationPosts .post.side-l .postHeader .controls { float:none; margin-top:8px; }
+}
+
+/* Optional classic navigation injected by the plugin view. */
+.classic-pagination { display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin:15px 0 25px; color:#888; font-size:90%; }
+.classic-pagination a, .classic-pagination span { padding:5px 8px; border:1px solid #ddd; border-radius:3px; background:rgba(255,255,255,.55); }
+.classic-pagination a:hover { border-color:#aaa; text-decoration:none; }
+.classic-pagination .classic-page-status { border-color:transparent; background:transparent; }
+.classic-layout-note { color:#888; font-size:85%; margin:0 0 10px; }
+
+html.et-dark .classic-pagination { color:#9ca3af; }
+html.et-dark .classic-pagination a,
+html.et-dark .classic-pagination span { border-color:#3a4150; background:#1a1d24; color:#e5e7eb; }
+html.et-dark .classic-pagination a:hover { border-color:#93c5fd; background:#22262f; }
+html.et-dark .classic-pagination .classic-page-status { background:transparent; color:#9ca3af; }
+html.et-dark .classic-layout-note { color:#9ca3af; }

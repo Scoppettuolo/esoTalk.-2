@@ -1,0 +1,27 @@
+.classicConversationList { width:100%; table-layout:auto; }
+.classicConversationList th, .classicConversationList td { vertical-align:middle; }
+.classicConversationList th.avatar, .classicConversationList td.avatar { width:34px; text-align:center; }
+.classicConversationList th.star, .classicConversationList td.star { width:28px; text-align:center; }
+.classicConversationList th.posts, .classicConversationList td.posts { width:55px; text-align:center; }
+.classicConversationList th.author, .classicConversationList td.author,
+.classicConversationList th.lastReply, .classicConversationList td.lastReply { min-width:120px; }
+.classicConversationList td.avatar img, .classicConversationList td.avatar .avatar { width:30px; height:30px; }
+.classicConversationList td.conversation strong { font-size:1.05em; }
+.classicConversationList td.conversation .tags { color:#888; }
+.classicConversationList td small { color:#888; }
+.classic-viewMore { margin:12px 0; text-align:center; }
+@media (max-width:700px) {
+  .classicConversationList th.channel, .classicConversationList td.channel,
+  .classicConversationList th.author, .classicConversationList td.author,
+  .classicConversationList th.lastReply, .classicConversationList td.lastReply { display:none; }
+  .classicConversationList th.posts, .classicConversationList td.posts { width:38px; }
+  .classicConversationList th.avatar, .classicConversationList td.avatar { width:30px; }
+}
+
+html.et-dark .classicConversationList { color:#e5e7eb; border-color:#2a2f3a; }
+html.et-dark .classicConversationList th,
+html.et-dark .classicConversationList td { border-color:#2a2f3a; }
+html.et-dark .classicConversationList td.conversation .tags,
+html.et-dark .classicConversationList td small { color:#9ca3af; }
+html.et-dark .classicConversationList a { color:#93c5fd; }
+html.et-dark .classicConversationList tr:hover { background:#22262f; }

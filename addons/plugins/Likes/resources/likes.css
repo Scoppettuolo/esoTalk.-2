@@ -1,0 +1,13 @@
+.control-like {
+	color: #888 !important;
+}
+.control-like.liked {
+	color: #3b82f6 !important;
+	font-weight: 600;
+}
+.control-like .like-count {
+	font-size: 0.9em;
+}
+.control-like:hover {
+	color: #2563eb !important;
+}

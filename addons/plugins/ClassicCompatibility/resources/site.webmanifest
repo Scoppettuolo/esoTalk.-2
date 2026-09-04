@@ -1,0 +1,9 @@
+{
+  "name": "esoTalk",
+  "short_name": "esoTalk",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#364159",
+  "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]
+}

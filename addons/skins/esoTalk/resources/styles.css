@@ -1,0 +1,225 @@
+/* esoTalk 1.0.0 — v2 adaptation
+   Flat Metro / Windows-inspired visual language on the real esoTalk 2 DOM.
+   This file intentionally does not reuse v1-only selectors such as .c, .p, .hdr or .body. */
+:root {
+  --et-bg: #e6e6e6;
+  --et-surface: #fff;
+  --et-text: #1a1a1a;
+  --et-muted: #666;
+  --et-line: #c8c8c8;
+  --et-accent: #0078d4;
+  --et-accent-dark: #005a9e;
+  --et-accent-soft: #eef6fc;
+  --et-bar: #f2f2f2;
+  --et-danger: #e81123;
+  --et-ok: #107c10;
+}
+
+html { color-scheme: light; }
+body, input, textarea, select, button {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+body {
+  background: var(--et-bg);
+  color: var(--et-text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--et-accent); }
+a:hover { color: var(--et-accent-dark); }
+small, dt, .subText { color: var(--et-muted); }
+
+/* The v2 master is flexible; the classic skin supplies only visual chrome. */
+#hdr {
+  background: #fff;
+  border-bottom: 1px solid var(--et-line);
+  box-shadow: none;
+  text-shadow: none;
+}
+#hdr-content, #body-content, #ftr-content { max-width: 1100px; }
+#hdr h1, #forumTitle { font-weight: 600; letter-spacing: -.02em; }
+#hdr h1 a, #forumTitle a { color: var(--et-text); }
+#hdr h1 a:hover, #forumTitle a:hover { text-decoration: none; }
+#hdr h1 img, #forumTitle img { filter: none; }
+#forumTitle #forumDescription { color: var(--et-muted); text-shadow: none; }
+#mainMenu a, #userMenu a { color: var(--et-text); }
+#mainMenu a:hover, #userMenu a:hover { color: var(--et-accent-dark); }
+#userMenu .link-newConversation { color: #fff; }
+
+#body {
+  background: var(--et-surface);
+  background-image: linear-gradient(#f3f3f3, #fff 90px);
+  background-repeat: no-repeat;
+}
+#body-content, #ftr-content { background: var(--et-surface); }
+#body-content { border-left: 1px solid var(--et-line); border-right: 1px solid var(--et-line); }
+#ftr-content { border-top: 1px solid var(--et-line); color: var(--et-muted); }
+#ftr-content a { color: var(--et-accent); }
+
+/* Flat controls with a consistent focus ring. */
+input, textarea, select, .input {
+  color: var(--et-text);
+  background: #fff;
+  border: 1px solid var(--et-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+input:focus, textarea:focus, select:focus, .input:focus {
+  border-color: var(--et-accent);
+  outline: 2px solid rgba(0,120,212,.22);
+  outline-offset: 0;
+}
+input::placeholder, textarea::placeholder { color: #777; opacity: 1; }
+option { color: var(--et-text); background: #fff; }
+.button, a.button, button.button {
+  min-height: 32px;
+  height: auto;
+  box-sizing: border-box;
+  border: 1px solid var(--et-accent-dark);
+  border-radius: 0;
+  background: var(--et-accent);
+  color: #fff;
+  box-shadow: none;
+  text-shadow: none;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.button:hover, a.button:hover, button.button:hover { background: #2b88d8; color: #fff; box-shadow: none; }
+.button:active, a.button:active, button.button:active { background: var(--et-accent-dark); color: #fff; }
+.buttonSmall, .button.small, .buttonDisabled {
+  background: #f0f0f0;
+  border-color: var(--et-line);
+  color: var(--et-text);
+}
+.buttonSmall:hover, .button.small:hover { background: #e5e5e5; color: var(--et-text); }
+.button.submit, .button.primary, .button.big.submit { background: var(--et-accent); color: #fff; }
+.button.submit:hover, .button.primary:hover { background: #2b88d8; color: #fff; }
+
+/* Search, tabs and conversation list use the current v2 components. */
+#body #search, #conversationsFilter, #searchResults {
+  border-color: var(--et-line);
+  box-shadow: none;
+}
+#body #search { background: rgba(255,255,255,.7); }
+.search input.text, #searchText { background: #fff; color: var(--et-text); border-color: var(--et-line); box-shadow: none; }
+.search input.text:focus, #searchText:focus { border-color: var(--et-accent); }
+.tabs.big { border-bottom-color: var(--et-line); }
+.tabs li > a { color: var(--et-muted); }
+.tabs li > a:hover { border-color: var(--et-line); background: #f6f6f6; color: var(--et-text); }
+.tabs li.selected > a { background: var(--et-accent); border-color: var(--et-accent-dark); color: #fff; }
+.channel, .gambit, #gambits a { border-radius: 0; }
+.channel { border-color: var(--et-line); background: #f4f4f4; color: var(--et-text); }
+.channel:hover, #gambits a:hover { background: var(--et-accent-soft); border-color: var(--et-accent); text-decoration: none; }
+.conversationList > li {
+  background: rgba(255,255,255,.9);
+  border-color: var(--et-line);
+}
+.conversationList > li:hover { background: var(--et-accent-soft); }
+.conversationList .title a { color: var(--et-text); }
+.conversationList .unread .title a { color: var(--et-accent-dark); }
+.conversationList .action, .conversationList .action * { color: var(--et-muted); }
+.conversationList .labels .label { border-radius: 0; }
+
+/* Current v2 post markup, with classic side/group classes supplied by ClassicConversation. */
+#conversationPosts .post { margin-bottom: 10px; }
+#conversationPosts .postContent.thing,
+#reply .postContent.thing {
+  border: 1px solid var(--et-line);
+  border-radius: 0;
+  background: var(--post-color, #fff);
+  box-shadow: none;
+  overflow: visible;
+}
+#conversationPosts .postHeader,
+#reply .postHeader {
+  background: var(--profile-color, #f0f0f0);
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  color: var(--hdr-text, var(--et-text));
+  text-shadow: none;
+}
+#conversationPosts .postHeader h3,
+#conversationPosts .postHeader h3 a,
+#conversationPosts .postHeader small,
+#reply .postHeader h3,
+#reply .postHeader h3 a,
+#reply .postHeader small { color: var(--hdr-text, var(--et-text)); }
+#conversationPosts .postBody, #reply .postBody {
+  background: var(--post-color, #fff);
+  color: var(--post-text, var(--et-text));
+  text-shadow: none;
+  line-height: 1.6;
+}
+#conversationPosts .postBody a, #reply .postBody a {
+  color: var(--et-accent-dark);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+#conversationPosts .postBody a:hover, #reply .postBody a:hover { color: var(--et-accent); }
+#conversationPosts .postFooter, #reply .postFooter {
+  background: var(--post-color, #fff);
+  border-top: 1px solid rgba(0,0,0,.08);
+  color: var(--et-muted);
+}
+#conversationPosts .post .controls a, #reply .post .controls a {
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(0,0,0,.06);
+  color: var(--hdr-text, var(--et-text)) !important;
+  box-shadow: none;
+}
+#conversationPosts .post .controls a:hover, #reply .post .controls a:hover {
+  background: #fff;
+  border-color: var(--et-accent);
+  color: var(--et-accent-dark) !important;
+}
+#conversationPosts .post .avatar, #reply .post .avatar {
+  border-radius: 0;
+  box-shadow: none;
+}
+blockquote { background: rgba(0,0,0,.04); border-left: 3px solid var(--et-line); box-shadow: none; }
+pre, code { background: #f5f5f5; border-color: var(--et-line); }
+
+/* Keep the v2 collapsed/animated composer intact while giving it square classic chrome. */
+#reply.replyPlaceholder .postContent { border-style: dashed; }
+#reply.replyPlaceholder .postHeader h3 { color: var(--et-muted); }
+#reply.reply-expanded .postContent { border-color: var(--et-accent); }
+#reply .postBody textarea, #reply .postBody input, .post.edit .postBody textarea {
+  border-color: var(--et-line);
+  background: #fff;
+  color: var(--et-text);
+  box-shadow: none;
+}
+#reply .postBody textarea:focus, .post.edit .postBody textarea:focus { border-color: var(--et-accent); }
+
+/* Admin, profile, sheets and notifications. */
+#admin, .admin-card, .sheet, .area { background: #fff; border-color: var(--et-line); box-shadow: none; }
+#admin .menu li a, #admin .menu li.active a {
+  border-radius: 0;
+  border-color: var(--et-line);
+  background: #f5f5f5;
+  color: var(--et-text);
+  text-shadow: none;
+}
+#admin .menu li.active a, #admin .menu li:not(.active) a:hover {
+  background: #fff;
+  border-color: var(--et-accent);
+  color: var(--et-accent-dark);
+}
+#plugins li, #skins li, .profile .form li { border-color: var(--et-line); }
+.popup, .popupMenu { border-color: var(--et-line); box-shadow: none; }
+.popupMenu li > a:hover, ul.popupMenu li.selected > a { background: var(--et-accent); }
+.message { border-radius: 0; box-shadow: none; }
+.message.success { background: #dff6dd; border-color: #a8d5a5; color: #075b07; }
+.message.warning { background: #fde7e9; border-color: #e0a4aa; color: #6a0008; }
+
+/* v2 member color plugin: colors remain owned by its CSS variables. */
+#conversationPosts .postContent.thing, #conversationPosts .postHeader,
+#conversationPosts .postBody, #conversationPosts .postFooter { border-radius: 0; }
+
+/* Mobile: preserve side identity without horizontal overflow. */
+@media (max-width: 700px) {
+  #body-content { border-left: 0; border-right: 0; }
+  #hdr-inner { gap: 6px; }
+  #hdr h1, #forumTitle { font-size: 16px; }
+  #conversationPosts .postHeader .controls { float: none; margin-top: 6px; }
+  #conversationPosts .postBody, #reply .postBody { line-height: 1.55; }
+}

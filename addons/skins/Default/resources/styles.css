@@ -1,0 +1,337 @@
+/*
+Default Skin Styles (modernized)
+Defines fonts, sizes, colors and wrapper layout (header + footer).
+Interface styles live in core/skin/base.css and can be overridden here.
+*/
+
+/* Global */
+html { color-scheme: light; }
+body {
+	font-size: 14px;
+	font-weight: 400;
+	margin: 0;
+	overflow-y: scroll;
+	background: #fff;
+	color: #555;
+	-webkit-font-smoothing: antialiased;
+}
+body, input, textarea, select {
+	font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+input, textarea, select { font-size: 100%; color: #555; }
+input::placeholder, textarea::placeholder { color: #888; opacity: 1; }
+option { color: #555; background: #fff; }
+strong { font-weight: 600; }
+
+
+/* Links */
+a { color:#354059; text-decoration:none; }
+a:hover { color:#1e2b43; text-decoration:none; }
+.postBody a { color:#2d4f98; text-decoration:underline; text-underline-offset:2px; }
+.postBody a:hover { color:#1e2b43; }
+.button { color:#354059; }
+.button:hover { color:#1e2b43; }
+.button.submit, .button.submit:hover { color:#fff; }
+
+
+/* Skip link (accessibility) */
+.skip-link {
+	position: absolute;
+	left: -9999px;
+	top: 0;
+	z-index: 1000;
+	padding: 8px 16px;
+	background: #000;
+	color: #fff;
+	font-weight: 600;
+}
+.skip-link:focus {
+	left: 10px;
+	top: 10px;
+}
+
+
+/* Inline / block */
+small { font-size: 85%; }
+h1 { font-size: 150%; font-weight: 400; }
+h2 { font-size: 160%; font-weight: 400; }
+h3 { font-size: 115%; font-weight: 600; }
+h4 { font-weight: 600; }
+p, ul, pre { line-height: 1.6em; }
+.bodyHeader h1 { line-height: 1.5em; }
+
+
+/* Sheets */
+.sheet h3 { font-weight: 400; }
+.sheet, .area { background: #fff; }
+
+
+/* Conversation list */
+.conversationList .title { font-weight: 400; font-size: 16px; }
+.conversationList .unread .title a { font-weight: 600; }
+.conversationList .action * { font-weight: 400; }
+
+
+/* Channel list */
+.channelList .channel { font-weight: 600; }
+
+
+/* Posts */
+.postHeader h3 { font-size: 120%; font-weight: 600; }
+.postBody h4 { font-weight: 400; }
+.replyPlaceholder .postHeader h3 { font-weight: 400; }
+.postBody { line-height: 1.75em; font-size: 16px; }
+.postBody a { font-weight: 600; }
+
+
+/* Tabs */
+.tabs.big li.selected a { color: #fff; border: 0; padding: 11px 14px; }
+
+
+/* Misc */
+.permissionsGrid .group th { font-weight: 400; }
+.action .name, .action a, .action strong { font-weight: 600; }
+.avatar { border-radius: 50%; }
+.scrubber li.selected > a { font-weight: 600; }
+
+
+/* Layout – flexible container */
+#hdr-content,
+#body-content,
+#ftr-content {
+	margin: 0 auto;
+	max-width: 1100px;
+	padding: 0 24px;
+	box-sizing: border-box;
+}
+#body-content,
+#ftr-content { background-color: #fff; }
+#body-content { padding-bottom: 24px; padding-top: 12px; }
+#body { padding-top: 56px; }
+
+
+/* Menus */
+.menu {
+	font-size: 95%;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+}
+.menu > li { display: inline-block; }
+
+
+/* Header – modern flex layout (replaces old padding-right hack) */
+#hdr {
+	background: #fff;
+	position: fixed;
+	width: 100%;
+	z-index: 100;
+	border-bottom: 1px solid;
+	box-sizing: border-box;
+}
+#hdr-inner {
+	display: flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	gap: 12px;
+	min-height: 52px;
+	white-space: nowrap;
+}
+#hdr h1,
+#forumTitle {
+	display: inline-block;
+	max-width: 100%;
+	font-size: 18px;
+	padding: 0;
+	margin: 0;
+	font-weight: 400;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	flex-shrink: 1;
+	min-width: 0;
+}
+#hdr h1 img,
+#forumTitle img {
+	display: inline;
+	vertical-align: -5px;
+	margin-right: 6px;
+	border: 0;
+}
+#hdr h1 span { margin-left: 8px; }
+
+#backButton {
+	flex-shrink: 0;
+	font-size: 18px;
+	line-height: 1;
+	text-decoration: none;
+	padding: 4px;
+}
+
+#mainMenu {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0;
+	padding: 0;
+	flex-shrink: 0;
+}
+#mainMenu > li { margin: 0 6px; }
+
+#userMenu {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	padding: 0;
+	gap: 4px;
+	flex-shrink: 0;
+}
+#userMenu .item-user { font-weight: 600; }
+#userMenu .item-user .avatar {
+	vertical-align: middle;
+	margin: -4px 6px -4px 0;
+}
+#userMenu.menu > li { margin: 0 8px; text-align: left; }
+
+#hdr .button {
+	border-radius: 4px;
+	font-size: 100%;
+	padding: 8px 12px;
+	margin: 0;
+	line-height: 1.2;
+}
+#hdr #notifications { color: #ccc; }
+#hdr #notifications.new { color: #fff !important; }
+
+
+/* Footer */
+#ftr { font-size: 90%; }
+#ftr-content {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 10px;
+}
+#ftr li { margin-right: 10px; }
+#ftr .item-copyright { margin-left: auto; }
+
+
+/* Text inputs */
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=email],
+input[type=search],
+input[type=url],
+input[type=tel],
+input[type=date],
+input[type=time],
+textarea,
+select,
+.input {
+	font-weight: 400;
+	color: #555;
+	background: #fff;
+	border: 1px solid;
+	padding: 6px 8px;
+	border-radius: 4px;
+	vertical-align: middle;
+	margin: 0;
+	-webkit-appearance: none;
+}
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus,
+input[type=number]:focus,
+input[type=email]:focus,
+.input:focus {
+	outline: 0;
+}
+
+
+/* Buttons */
+.button {
+	background: #f6f6f6;
+	font-weight: 600;
+	border: 1px solid transparent;
+	margin-bottom: 1px;
+	white-space: normal;
+	min-height: 32px;
+	height: auto;
+	font-size: 90%;
+	padding: 6px 12px;
+	line-height: 1.25;
+	border-radius: 4px;
+	-webkit-appearance: none;
+	cursor: pointer;
+	box-sizing: border-box;
+	vertical-align: middle;
+}
+.button.big {
+	min-height: 36px;
+	height: auto;
+	font-size: 90%;
+	padding: 8px 14px;
+	line-height: 1.25;
+}
+.button:hover,
+.button:active { border-color: #ddd; }
+.button:active { background-color: #ddd; }
+.button.disabled {
+	opacity: 0.25;
+	cursor: default;
+	border-color: transparent !important;
+}
+
+a.button.big {
+	padding: 10px 14px;
+	height: auto;
+	line-height: 1.25;
+	display: inline-block;
+	box-sizing: border-box;
+	white-space: normal;
+	word-break: normal;
+	overflow-wrap: anywhere;
+	text-align: center;
+}
+.scrubberContent a.button.big {
+	width: 100%;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.button.submit { color: #fff; }
+.button.submit:hover { border-color: #000; color: #fff; }
+
+.buttonGroup .button { margin-right: -3px; }
+
+
+/* Focus visible for keyboard users */
+a:focus-visible,
+button:focus-visible,
+.button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+/* v2 hardening: user content must never widen the page or the composer. */
+#body-content, #conversationPosts, #reply, #reply .postContent, #reply .postBody { min-width: 0; }
+#conversationPosts img, #reply img, .postBody img { max-width: 100%; height: auto; }
+#conversationPosts pre, #reply pre, .postBody pre { max-width: 100%; overflow-x: auto; box-sizing: border-box; }
+#conversationPosts table, #reply table, .postBody table { max-width: 100%; display: block; overflow-x: auto; }
+.postBody iframe, .postBody video, .postBody object, .postBody embed { max-width: 100%; }
+#reply .postBody textarea, .post.edit .postBody textarea { max-width: 100%; box-sizing: border-box; }
+
+@media (max-width: 700px) {
+	#hdr-content, #body-content, #ftr-content { padding-left: 12px; padding-right: 12px; }
+	#hdr-inner { gap: 6px; }
+	#mainMenu { min-width: 0; }
+	#userMenu { min-width: 0; }
+	#conversationPosts .postBody, #reply .postBody { overflow-wrap: anywhere; }
+}

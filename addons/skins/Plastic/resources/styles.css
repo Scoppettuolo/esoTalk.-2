@@ -1,0 +1,190 @@
+/* Plastic — esoTalk v2 adaptation of the v1 blue plastic theme.
+   Selectors target v2 markup; v1-only .c/.p/.hdr/.body selectors are intentionally absent. */
+:root {
+  --plastic-bg: #e4e5ea;
+  --plastic-surface: #fff;
+  --plastic-line: #c1c1c1;
+  --plastic-text: #555;
+  --plastic-dark: #1f4f8f;
+  --plastic-blue: #1e77af;
+  --plastic-blue-light: #37dcee;
+}
+html { color-scheme: light; }
+body {
+  background: linear-gradient(var(--plastic-bg), #fff 72%) no-repeat;
+  color: var(--plastic-text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--plastic-dark); }
+a:hover { color: #12345f; }
+small, dt, .subText { color: #888; }
+
+/* Header and v2 navigation. */
+#hdr {
+  background: linear-gradient(#fff, #e4e5ea);
+  border-bottom-color: var(--plastic-line);
+  text-shadow: 0 1px 0 #fff;
+}
+#hdr h1 a, #forumTitle a { color: #000; }
+#hdr h1 a:hover, #forumTitle a:hover { text-decoration: none; }
+#hdr h1 img, #forumTitle img { filter: drop-shadow(0 1px 0 #fff); }
+#forumTitle #forumDescription { color: #777; text-shadow: 0 1px 0 #fff; }
+#mainMenu a, #userMenu a { color: #000; }
+#mainMenu a:hover, #userMenu a:hover { color: var(--plastic-dark); }
+#userMenu .link-newConversation { color: #fff; }
+
+#body {
+  background: linear-gradient(#ecedee, #fff) no-repeat;
+  background-size: 100% 90px;
+}
+#body-content, #ftr-content { background: var(--plastic-surface); }
+#body-content { border-left: 1px solid var(--plastic-line); border-right: 1px solid var(--plastic-line); }
+#ftr-content { border-top: 1px dashed #ccc; color: #888; }
+#ftr-content a { color: var(--plastic-dark); }
+
+/* Search and form controls. */
+#body #search { background: rgba(255,255,255,.58); border-color: #bbb; }
+.search input.text, #searchText,
+input[type=text], input[type=password], input[type=email], input[type=number],
+input[type=search], input[type=url], input[type=tel], textarea, select, .input {
+  background: #fff;
+  color: #555;
+  border-color: #bbb;
+  box-shadow: inset 0 1px 3px #ccc, 0 1px 0 #fff;
+}
+.search input.text:focus, #searchText:focus,
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus,
+input[type=number]:focus, input[type=search]:focus, input[type=url]:focus,
+input[type=tel]:focus, textarea:focus, select:focus, .input:focus {
+  border-color: #777;
+  outline: 2px solid rgba(31,79,143,.18);
+  outline-offset: 0;
+}
+input::placeholder, textarea::placeholder { color: #aaa; opacity: 1; }
+option { color: #555; background: #fff; }
+
+/* Plastic buttons are beveled but keep v2's wrapping behavior. */
+.button, a.button, button.button {
+  min-height: 32px;
+  height: auto;
+  box-sizing: border-box;
+  border: 1px solid #1a6b9d;
+  border-radius: 4px;
+  background: linear-gradient(#9dcade 25%, #44a2c9 50%, #1e77af 50%, #37dcee 100%);
+  color: #fff;
+  text-shadow: #046b9e 0 -1px;
+  box-shadow: inset 0 1px 0 #eee;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.button:hover, a.button:hover, button.button:hover { color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.5), inset 0 1px 0 #eee; }
+.button:active, a.button:active, button.button:active { color: #fff; box-shadow: inset 0 0 25px 2px rgba(0,0,0,.25); }
+.buttonSmall, .button.small, .buttonDisabled {
+  background: linear-gradient(#f7f7f7, #d8d9e1);
+  border-color: #bbb;
+  color: #000;
+  text-shadow: #fff 0 1px;
+}
+.buttonSmall:hover, .button.small:hover { color: #000; box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+.button.submit, .button.primary, .button.big.submit { color: #fff; }
+
+/* v2 tabs, filters and conversation list. */
+#conversationsFilter, #searchResults { border-color: #bbb; }
+.tabs li > a { color: #666; }
+.tabs li > a:hover { background: #f4f4f4; border-color: #ccc; color: #12345f; }
+.tabs li.selected > a { background: #364159; border-color: #263149; color: #fff; }
+.tabs.big li.selected > a { color: #fff; }
+.channel { background: #fff; border-color: #bbb; color: #555; }
+.channel:hover { background: #e9f3f2; border-color: #1e77af; text-decoration: none; }
+.conversationList > li {
+  background: rgba(255,255,255,.84);
+  border-color: #ddd;
+}
+.conversationList > li:hover { background: #f4f4f4; }
+.conversationList .title a { color: #1f1f1f; }
+.conversationList .unread .title a { color: #12345f; }
+.conversationList .action, .conversationList .action * { color: #888; }
+.conversationList .labels .label { border-radius: 3px; }
+
+/* v2 conversation markup. */
+#conversationPosts .postContent.thing, #reply .postContent.thing {
+  border-color: #c1c1c1;
+  border-radius: 4px;
+  background: var(--post-color, #fff);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
+  overflow: visible;
+}
+#conversationPosts .postHeader, #reply .postHeader {
+  background: var(--profile-color, #e4e5ea);
+  border-bottom-color: #c1c1c1;
+  color: var(--hdr-text, #000);
+  text-shadow: rgba(255,255,255,.5) 0 1px;
+}
+#conversationPosts .postHeader h3, #conversationPosts .postHeader h3 a,
+#conversationPosts .postHeader small, #reply .postHeader h3,
+#reply .postHeader h3 a, #reply .postHeader small { color: var(--hdr-text, #000); }
+#conversationPosts .postBody, #reply .postBody {
+  background: var(--post-color, #fff);
+  color: var(--post-text, #555);
+  text-shadow: #fff 0 1px;
+  line-height: 1.65;
+}
+#conversationPosts .postBody a, #reply .postBody a {
+  color: #1f4f8f;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+#conversationPosts .postBody a:hover, #reply .postBody a:hover { color: #12345f; }
+#conversationPosts .postFooter, #reply .postFooter {
+  background: var(--post-color, #fff);
+  border-top: 1px solid rgba(0,0,0,.08);
+  color: #888;
+}
+#conversationPosts .post .controls a, #reply .post .controls a {
+  background: rgba(0,0,0,.1);
+  color: var(--hdr-text, #555) !important;
+  box-shadow: rgba(255,255,255,.5) 0 1px;
+}
+#conversationPosts .post .controls a:hover, #reply .post .controls a:hover { background: #fff; color: #12345f !important; }
+#conversationPosts .post .avatar, #reply .post .avatar { border-radius: 3px; }
+blockquote { background: rgba(0,0,0,.05); border-color: rgba(0,0,0,.1); box-shadow: #fff 0 1px, inset 0 1px 3px #ccc; }
+pre { border-color: #bbb; }
+code { background: #e6e6e6; }
+
+/* The v2 composer remains collapsed/animated; only its chrome is themed. */
+#reply.replyPlaceholder .postContent { border-style: dashed; }
+#reply.reply-expanded .postContent { border-color: #1e77af; }
+#reply .postBody textarea, .post.edit .postBody textarea {
+  background: #fff;
+  color: #555;
+  border-color: #bbb;
+  box-shadow: inset 0 1px 3px #ccc;
+}
+#reply .postBody textarea:focus, .post.edit .postBody textarea:focus { border-color: #1e77af; }
+#reply .postFooter .button, #reply .postReply { max-width: 100%; box-sizing: border-box; white-space: normal; }
+
+/* Sheets, popups, notifications and administration. */
+.sheet, .area, #admin, .admin-card { background: #fff; border-color: #c1c1c1; box-shadow: none; }
+.popup, .popupMenu { border-color: #aaa; }
+.popupMenu li > a:hover, ul.popupMenu li.selected > a { background: #364159; }
+#admin .menu li a, #admin .menu li.active a { background: #f5f5f5; border-color: #ccc; color: #333; }
+#admin .menu li.active a, #admin .menu li:not(.active) a:hover { background: #fff; border-color: #1e77af; color: #12345f; }
+#plugins li, #skins li, .profile .form li { border-color: #ddd; }
+.message { border-radius: 4px; }
+.message.success { background: #cfd; border-color: #aeb; color: #050; }
+.message.warning { background: #fde; border-color: #ebb; color: #c00; }
+
+/* Keep the v1 palette owned by MemberColors instead of duplicating it here. */
+#conversationPosts .postHeader, #conversationPosts .postBody,
+#conversationPosts .postContent.thing, #conversationPosts .postFooter { background-clip: padding-box; }
+
+@media (max-width: 700px) {
+  #body-content { border-left: 0; border-right: 0; }
+  #hdr-inner { gap: 6px; }
+  #conversationPosts .postHeader .controls { float: none; margin-top: 7px; }
+  #conversationPosts .postBody, #reply .postBody { line-height: 1.55; }
+}
+
+html.et-dark body { background: #0f1115; }
+html.et-dark #hdr, html.et-dark #body, html.et-dark #body-content, html.et-dark #ftr-content { text-shadow: none; }

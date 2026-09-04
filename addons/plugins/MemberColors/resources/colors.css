@@ -1,0 +1,202 @@
+/* Classic esoTalk member colors. The v1 contract colored the complete post panel,
+   used a stronger profile strip/header color, and kept header text readable. */
+.member-color-preview { max-width: 760px; margin: 5px 0 14px; }
+.member-color-preview .postContent { margin: 0; }
+.member-color-preview .postBody { min-height: 42px; }
+.member-color-palette { display:flex; flex-wrap:wrap; gap:6px; max-width:420px; margin:4px 0 8px; }
+.member-color-palette a { display:block; width:25px; height:25px; border:2px solid rgba(0,0,0,.14); border-radius:5px; box-sizing:border-box; transition:transform .12s ease, box-shadow .12s ease; }
+.member-color-palette a:hover, .member-color-palette a:focus { transform:scale(1.12); box-shadow:0 0 0 2px rgba(54,65,89,.35); outline:0; }
+.member-color-palette a.selected { box-shadow:0 0 0 2px #364159, inset 0 0 0 2px rgba(255,255,255,.65); }
+
+/* The palette values are the original 27 esoTalk pastels. */
+.post.c1  { --profile-color:#dfdfdf; --post-color:#eeeeee; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c2  { --profile-color:#d2d2d2; --post-color:#eeeeee; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c3  { --profile-color:#cf9eff; --post-color:#f7eeff; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c4  { --profile-color:#b29cff; --post-color:#f1edff; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c5  { --profile-color:#a5b1ff; --post-color:#eff1ff; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c6  { --profile-color:#adccff; --post-color:#f0f6ff; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c7  { --profile-color:#b4e7ff; --post-color:#f1faff; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c8  { --profile-color:#93fff1; --post-color:#ecfffc; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c9  { --profile-color:#a4ffd4; --post-color:#effff8; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c10 { --profile-color:#93ffae; --post-color:#ecfff1; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c11 { --profile-color:#b5ff97; --post-color:#f3ffec; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c12 { --profile-color:#d4ff95; --post-color:#f8ffec; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c13 { --profile-color:#ebff99; --post-color:#fbffed; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c14 { --profile-color:#fff391; --post-color:#fffdeb; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c15 { --profile-color:#ffdb75; --post-color:#fff9e7; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c16 { --profile-color:#ffcd92; --post-color:#fff6ec; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c17 { --profile-color:#ffc19b; --post-color:#fff4ed; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c18 { --profile-color:#ffa3af; --post-color:#ffeef1; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c19 { --profile-color:#ffafdc; --post-color:#fff0f8; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c20 { --profile-color:#eba5ff; --post-color:#fcefff; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c21 { --profile-color:#c0c0db; --post-color:#f4f4f8; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c22 { --profile-color:#abcbcd; --post-color:#f0f5f6; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c23 { --profile-color:#b8d9c2; --post-color:#f2f8f4; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c24 { --profile-color:#c8d9b8; --post-color:#f6f8f3; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c25 { --profile-color:#e5e2ba; --post-color:#fafaf2; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c26 { --profile-color:#e7d0bb; --post-color:#fbf7f3; --hdr-text:#1a1a1a; --post-text:#222; }
+.post.c27 { --profile-color:#cdc5bd; --post-color:#f6f5f3; --hdr-text:#1a1a1a; --post-text:#222; }
+
+.member-color-palette .mc1  { background:#eeeeee; }
+.member-color-palette .mc2  { background:#eeeeee; }
+.member-color-palette .mc3  { background:#f7eeff; }
+.member-color-palette .mc4  { background:#f1edff; }
+.member-color-palette .mc5  { background:#eff1ff; }
+.member-color-palette .mc6  { background:#f0f6ff; }
+.member-color-palette .mc7  { background:#f1faff; }
+.member-color-palette .mc8  { background:#ecfffc; }
+.member-color-palette .mc9  { background:#effff8; }
+.member-color-palette .mc10 { background:#ecfff1; }
+.member-color-palette .mc11 { background:#f3ffec; }
+.member-color-palette .mc12 { background:#f8ffec; }
+.member-color-palette .mc13 { background:#fbffed; }
+.member-color-palette .mc14 { background:#fffdeb; }
+.member-color-palette .mc15 { background:#fff9e7; }
+.member-color-palette .mc16 { background:#fff6ec; }
+.member-color-palette .mc17 { background:#fff4ed; }
+.member-color-palette .mc18 { background:#ffeef1; }
+.member-color-palette .mc19 { background:#fff0f8; }
+.member-color-palette .mc20 { background:#fcefff; }
+.member-color-palette .mc21 { background:#f4f4f8; }
+.member-color-palette .mc22 { background:#f0f5f6; }
+.member-color-palette .mc23 { background:#f2f8f4; }
+.member-color-palette .mc24 { background:#f6f8f3; }
+.member-color-palette .mc25 { background:#fafaf2; }
+.member-color-palette .mc26 { background:#fbf7f3; }
+.member-color-palette .mc27 { background:#f6f5f3; }
+
+/* v1: header/avatar use profile color; the complete body uses the lighter color. */
+.post.c1, .post.c2, .post.c3, .post.c4, .post.c5, .post.c6, .post.c7, .post.c8, .post.c9, .post.c10, .post.c11, .post.c12, .post.c13, .post.c14, .post.c15, .post.c16, .post.c17, .post.c18, .post.c19, .post.c20, .post.c21, .post.c22, .post.c23, .post.c24, .post.c25, .post.c26, .post.c27 {
+  background:var(--profile-color);
+  border-color:var(--profile-color);
+  color:var(--post-text);
+}
+.post.c1 .postContent, .post.c2 .postContent, .post.c3 .postContent, .post.c4 .postContent, .post.c5 .postContent, .post.c6 .postContent, .post.c7 .postContent, .post.c8 .postContent, .post.c9 .postContent, .post.c10 .postContent, .post.c11 .postContent, .post.c12 .postContent, .post.c13 .postContent, .post.c14 .postContent, .post.c15 .postContent, .post.c16 .postContent, .post.c17 .postContent, .post.c18 .postContent, .post.c19 .postContent, .post.c20 .postContent, .post.c21 .postContent, .post.c22 .postContent, .post.c23 .postContent, .post.c24 .postContent, .post.c25 .postContent, .post.c26 .postContent, .post.c27 .postContent {
+  background:var(--post-color);
+  border-color:var(--profile-color);
+  color:var(--post-text);
+}
+.post.c1 .postHeader, .post.c2 .postHeader, .post.c3 .postHeader, .post.c4 .postHeader, .post.c5 .postHeader, .post.c6 .postHeader, .post.c7 .postHeader, .post.c8 .postHeader, .post.c9 .postHeader, .post.c10 .postHeader, .post.c11 .postHeader, .post.c12 .postHeader, .post.c13 .postHeader, .post.c14 .postHeader, .post.c15 .postHeader, .post.c16 .postHeader, .post.c17 .postHeader, .post.c18 .postHeader, .post.c19 .postHeader, .post.c20 .postHeader, .post.c21 .postHeader, .post.c22 .postHeader, .post.c23 .postHeader, .post.c24 .postHeader, .post.c25 .postHeader, .post.c26 .postHeader, .post.c27 .postHeader {
+  background:var(--profile-color);
+  border-bottom-color:rgba(0,0,0,.10);
+  color:var(--hdr-text);
+}
+.post.c1 .postHeader *, .post.c2 .postHeader *, .post.c3 .postHeader *, .post.c4 .postHeader *, .post.c5 .postHeader *, .post.c6 .postHeader *, .post.c7 .postHeader *, .post.c8 .postHeader *, .post.c9 .postHeader *, .post.c10 .postHeader *, .post.c11 .postHeader *, .post.c12 .postHeader *, .post.c13 .postHeader *, .post.c14 .postHeader *, .post.c15 .postHeader *, .post.c16 .postHeader *, .post.c17 .postHeader *, .post.c18 .postHeader *, .post.c19 .postHeader *, .post.c20 .postHeader *, .post.c21 .postHeader *, .post.c22 .postHeader *, .post.c23 .postHeader *, .post.c24 .postHeader *, .post.c25 .postHeader *, .post.c26 .postHeader *, .post.c27 .postHeader * {
+  color:var(--hdr-text) !important;
+  text-shadow:none;
+}
+.post.c1 .postBody, .post.c2 .postBody, .post.c3 .postBody, .post.c4 .postBody, .post.c5 .postBody, .post.c6 .postBody, .post.c7 .postBody, .post.c8 .postBody, .post.c9 .postBody, .post.c10 .postBody, .post.c11 .postBody, .post.c12 .postBody, .post.c13 .postBody, .post.c14 .postBody, .post.c15 .postBody, .post.c16 .postBody, .post.c17 .postBody, .post.c18 .postBody, .post.c19 .postBody, .post.c20 .postBody, .post.c21 .postBody, .post.c22 .postBody, .post.c23 .postBody, .post.c24 .postBody, .post.c25 .postBody, .post.c26 .postBody, .post.c27 .postBody {
+  background:transparent;
+  color:var(--post-text);
+}
+.post.c1 .postBody *, .post.c2 .postBody *, .post.c3 .postBody *, .post.c4 .postBody *, .post.c5 .postBody *, .post.c6 .postBody *, .post.c7 .postBody *, .post.c8 .postBody *, .post.c9 .postBody *, .post.c10 .postBody *, .post.c11 .postBody *, .post.c12 .postBody *, .post.c13 .postBody *, .post.c14 .postBody *, .post.c15 .postBody *, .post.c16 .postBody *, .post.c17 .postBody *, .post.c18 .postBody *, .post.c19 .postBody *, .post.c20 .postBody *, .post.c21 .postBody *, .post.c22 .postBody *, .post.c23 .postBody *, .post.c24 .postBody *, .post.c25 .postBody *, .post.c26 .postBody *, .post.c27 .postBody * {
+  color:var(--post-text);
+}
+.post.c1 .postBody a, .post.c2 .postBody a, .post.c3 .postBody a, .post.c4 .postBody a, .post.c5 .postBody a, .post.c6 .postBody a, .post.c7 .postBody a, .post.c8 .postBody a, .post.c9 .postBody a, .post.c10 .postBody a, .post.c11 .postBody a, .post.c12 .postBody a, .post.c13 .postBody a, .post.c14 .postBody a, .post.c15 .postBody a, .post.c16 .postBody a, .post.c17 .postBody a, .post.c18 .postBody a, .post.c19 .postBody a, .post.c20 .postBody a, .post.c21 .postBody a, .post.c22 .postBody a, .post.c23 .postBody a, .post.c24 .postBody a, .post.c25 .postBody a, .post.c26 .postBody a, .post.c27 .postBody a { color:#0645ad; }
+.post.c1 .avatar, .post.c2 .avatar, .post.c3 .avatar, .post.c4 .avatar, .post.c5 .avatar, .post.c6 .avatar, .post.c7 .avatar, .post.c8 .avatar, .post.c9 .avatar, .post.c10 .avatar, .post.c11 .avatar, .post.c12 .avatar, .post.c13 .avatar, .post.c14 .avatar, .post.c15 .avatar, .post.c16 .avatar, .post.c17 .avatar, .post.c18 .avatar, .post.c19 .avatar, .post.c20 .avatar, .post.c21 .avatar, .post.c22 .avatar, .post.c23 .avatar, .post.c24 .avatar, .post.c25 .avatar, .post.c26 .avatar, .post.c27 .avatar {
+  background:var(--profile-color);
+  border-color:var(--profile-color) !important;
+  box-shadow:0 0 0 1px rgba(0,0,0,.10) !important;
+}
+
+/* v1 kept reply/edit controls white and legible inside the coloured panel. */
+.post.c1 .postBody input, .post.c1 .postBody textarea, .post.c1 .postBody select,
+.post.c2 .postBody input, .post.c2 .postBody textarea, .post.c2 .postBody select,
+.post.c3 .postBody input, .post.c3 .postBody textarea, .post.c3 .postBody select,
+.post.c4 .postBody input, .post.c4 .postBody textarea, .post.c4 .postBody select,
+.post.c5 .postBody input, .post.c5 .postBody textarea, .post.c5 .postBody select,
+.post.c6 .postBody input, .post.c6 .postBody textarea, .post.c6 .postBody select,
+.post.c7 .postBody input, .post.c7 .postBody textarea, .post.c7 .postBody select,
+.post.c8 .postBody input, .post.c8 .postBody textarea, .post.c8 .postBody select,
+.post.c9 .postBody input, .post.c9 .postBody textarea, .post.c9 .postBody select,
+.post.c10 .postBody input, .post.c10 .postBody textarea, .post.c10 .postBody select,
+.post.c11 .postBody input, .post.c11 .postBody textarea, .post.c11 .postBody select,
+.post.c12 .postBody input, .post.c12 .postBody textarea, .post.c12 .postBody select,
+.post.c13 .postBody input, .post.c13 .postBody textarea, .post.c13 .postBody select,
+.post.c14 .postBody input, .post.c14 .postBody textarea, .post.c14 .postBody select,
+.post.c15 .postBody input, .post.c15 .postBody textarea, .post.c15 .postBody select,
+.post.c16 .postBody input, .post.c16 .postBody textarea, .post.c16 .postBody select,
+.post.c17 .postBody input, .post.c17 .postBody textarea, .post.c17 .postBody select,
+.post.c18 .postBody input, .post.c18 .postBody textarea, .post.c18 .postBody select,
+.post.c19 .postBody input, .post.c19 .postBody textarea, .post.c19 .postBody select,
+.post.c20 .postBody input, .post.c20 .postBody textarea, .post.c20 .postBody select,
+.post.c21 .postBody input, .post.c21 .postBody textarea, .post.c21 .postBody select,
+.post.c22 .postBody input, .post.c22 .postBody textarea, .post.c22 .postBody select,
+.post.c23 .postBody input, .post.c23 .postBody textarea, .post.c23 .postBody select,
+.post.c24 .postBody input, .post.c24 .postBody textarea, .post.c24 .postBody select,
+.post.c25 .postBody input, .post.c25 .postBody textarea, .post.c25 .postBody select,
+.post.c26 .postBody input, .post.c26 .postBody textarea, .post.c26 .postBody select,
+.post.c27 .postBody input, .post.c27 .postBody textarea, .post.c27 .postBody select {
+  background:#fff;
+  color:#222;
+  -webkit-text-fill-color:#222;
+  border-color:rgba(0,0,0,.22);
+}
+
+/* The manual dark toggle is authoritative; do not use prefers-color-scheme here. */
+html.et-dark .post.c1, html.et-dark .post.c2 { --profile-color:#4b4e55; --post-color:#2b2d31; --hdr-text:#f3f4f6; --post-text:#e5e7eb; }
+html.et-dark .post.c3, html.et-dark .post.c4, html.et-dark .post.c5, html.et-dark .post.c20 { --profile-color:#56446b; --post-color:#2f2a3a; --hdr-text:#f3f4f6; --post-text:#e5e7eb; }
+html.et-dark .post.c6, html.et-dark .post.c7 { --profile-color:#3f5874; --post-color:#263241; --hdr-text:#f3f4f6; --post-text:#e5e7eb; }
+html.et-dark .post.c8, html.et-dark .post.c9, html.et-dark .post.c10, html.et-dark .post.c11, html.et-dark .post.c12, html.et-dark .post.c13, html.et-dark .post.c14 { --profile-color:#3b5948; --post-color:#29372f; --hdr-text:#f3f4f6; --post-text:#e5e7eb; }
+html.et-dark .post.c15, html.et-dark .post.c16, html.et-dark .post.c17, html.et-dark .post.c18, html.et-dark .post.c19 { --profile-color:#63483a; --post-color:#3a302b; --hdr-text:#f3f4f6; --post-text:#e5e7eb; }
+html.et-dark .post.c21, html.et-dark .post.c22, html.et-dark .post.c23, html.et-dark .post.c24, html.et-dark .post.c25, html.et-dark .post.c26, html.et-dark .post.c27 { --profile-color:#4b4f54; --post-color:#303336; --hdr-text:#f3f4f6; --post-text:#e5e7eb; }
+html.et-dark .post.c1 .postContent.thing, html.et-dark .post.c2 .postContent.thing, html.et-dark .post.c3 .postContent.thing, html.et-dark .post.c4 .postContent.thing, html.et-dark .post.c5 .postContent.thing, html.et-dark .post.c6 .postContent.thing, html.et-dark .post.c7 .postContent.thing, html.et-dark .post.c8 .postContent.thing, html.et-dark .post.c9 .postContent.thing, html.et-dark .post.c10 .postContent.thing, html.et-dark .post.c11 .postContent.thing, html.et-dark .post.c12 .postContent.thing, html.et-dark .post.c13 .postContent.thing, html.et-dark .post.c14 .postContent.thing, html.et-dark .post.c15 .postContent.thing, html.et-dark .post.c16 .postContent.thing, html.et-dark .post.c17 .postContent.thing, html.et-dark .post.c18 .postContent.thing, html.et-dark .post.c19 .postContent.thing, html.et-dark .post.c20 .postContent.thing, html.et-dark .post.c21 .postContent.thing, html.et-dark .post.c22 .postContent.thing, html.et-dark .post.c23 .postContent.thing, html.et-dark .post.c24 .postContent.thing, html.et-dark .post.c25 .postContent.thing, html.et-dark .post.c26 .postContent.thing, html.et-dark .post.c27 .postContent.thing { background:var(--post-color) !important; border-color:var(--profile-color) !important; color:var(--post-text) !important; }
+html.et-dark .post.c1 .postHeader, html.et-dark .post.c2 .postHeader, html.et-dark .post.c3 .postHeader, html.et-dark .post.c4 .postHeader, html.et-dark .post.c5 .postHeader, html.et-dark .post.c6 .postHeader, html.et-dark .post.c7 .postHeader, html.et-dark .post.c8 .postHeader, html.et-dark .post.c9 .postHeader, html.et-dark .post.c10 .postHeader, html.et-dark .post.c11 .postHeader, html.et-dark .post.c12 .postHeader, html.et-dark .post.c13 .postHeader, html.et-dark .post.c14 .postHeader, html.et-dark .post.c15 .postHeader, html.et-dark .post.c16 .postHeader, html.et-dark .post.c17 .postHeader, html.et-dark .post.c18 .postHeader, html.et-dark .post.c19 .postHeader, html.et-dark .post.c20 .postHeader, html.et-dark .post.c21 .postHeader, html.et-dark .post.c22 .postHeader, html.et-dark .post.c23 .postHeader, html.et-dark .post.c24 .postHeader, html.et-dark .post.c25 .postHeader, html.et-dark .post.c26 .postHeader, html.et-dark .post.c27 .postHeader { background:var(--profile-color) !important; color:var(--hdr-text) !important; }
+html.et-dark .post.c1 .postBody, html.et-dark .post.c2 .postBody, html.et-dark .post.c3 .postBody, html.et-dark .post.c4 .postBody, html.et-dark .post.c5 .postBody, html.et-dark .post.c6 .postBody, html.et-dark .post.c7 .postBody, html.et-dark .post.c8 .postBody, html.et-dark .post.c9 .postBody, html.et-dark .post.c10 .postBody, html.et-dark .post.c11 .postBody, html.et-dark .post.c12 .postBody, html.et-dark .post.c13 .postBody, html.et-dark .post.c14 .postBody, html.et-dark .post.c15 .postBody, html.et-dark .post.c16 .postBody, html.et-dark .post.c17 .postBody, html.et-dark .post.c18 .postBody, html.et-dark .post.c19 .postBody, html.et-dark .post.c20 .postBody, html.et-dark .post.c21 .postBody, html.et-dark .post.c22 .postBody, html.et-dark .post.c23 .postBody, html.et-dark .post.c24 .postBody, html.et-dark .post.c25 .postBody, html.et-dark .post.c26 .postBody, html.et-dark .post.c27 .postBody { background:transparent !important; color:var(--post-text) !important; }
+html.et-dark .post.c1 .postBody *, html.et-dark .post.c2 .postBody *, html.et-dark .post.c3 .postBody *, html.et-dark .post.c4 .postBody *, html.et-dark .post.c5 .postBody *, html.et-dark .post.c6 .postBody *, html.et-dark .post.c7 .postBody *, html.et-dark .post.c8 .postBody *, html.et-dark .post.c9 .postBody *, html.et-dark .post.c10 .postBody *, html.et-dark .post.c11 .postBody *, html.et-dark .post.c12 .postBody *, html.et-dark .post.c13 .postBody *, html.et-dark .post.c14 .postBody *, html.et-dark .post.c15 .postBody *, html.et-dark .post.c16 .postBody *, html.et-dark .post.c17 .postBody *, html.et-dark .post.c18 .postBody *, html.et-dark .post.c19 .postBody *, html.et-dark .post.c20 .postBody *, html.et-dark .post.c21 .postBody *, html.et-dark .post.c22 .postBody *, html.et-dark .post.c23 .postBody *, html.et-dark .post.c24 .postBody *, html.et-dark .post.c25 .postBody *, html.et-dark .post.c26 .postBody *, html.et-dark .post.c27 .postBody * { color:var(--post-text) !important; -webkit-text-fill-color:var(--post-text) !important; }
+html.et-dark .post.c1 .postBody a, html.et-dark .post.c2 .postBody a, html.et-dark .post.c3 .postBody a, html.et-dark .post.c4 .postBody a, html.et-dark .post.c5 .postBody a, html.et-dark .post.c6 .postBody a, html.et-dark .post.c7 .postBody a, html.et-dark .post.c8 .postBody a, html.et-dark .post.c9 .postBody a, html.et-dark .post.c10 .postBody a, html.et-dark .post.c11 .postBody a, html.et-dark .post.c12 .postBody a, html.et-dark .post.c13 .postBody a, html.et-dark .post.c14 .postBody a, html.et-dark .post.c15 .postBody a, html.et-dark .post.c16 .postBody a, html.et-dark .post.c17 .postBody a, html.et-dark .post.c18 .postBody a, html.et-dark .post.c19 .postBody a, html.et-dark .post.c20 .postBody a, html.et-dark .post.c21 .postBody a, html.et-dark .post.c22 .postBody a, html.et-dark .post.c23 .postBody a, html.et-dark .post.c24 .postBody a, html.et-dark .post.c25 .postBody a, html.et-dark .post.c26 .postBody a, html.et-dark .post.c27 .postBody a { color:#93c5fd !important; -webkit-text-fill-color:#93c5fd !important; }
+html.et-dark .post.c1 .postBody input, html.et-dark .post.c1 .postBody textarea, html.et-dark .post.c1 .postBody select, html.et-dark .post.c2 .postBody input, html.et-dark .post.c2 .postBody textarea, html.et-dark .post.c2 .postBody select, html.et-dark .post.c3 .postBody input, html.et-dark .post.c3 .postBody textarea, html.et-dark .post.c3 .postBody select, html.et-dark .post.c4 .postBody input, html.et-dark .post.c4 .postBody textarea, html.et-dark .post.c4 .postBody select, html.et-dark .post.c5 .postBody input, html.et-dark .post.c5 .postBody textarea, html.et-dark .post.c5 .postBody select, html.et-dark .post.c6 .postBody input, html.et-dark .post.c6 .postBody textarea, html.et-dark .post.c6 .postBody select, html.et-dark .post.c7 .postBody input, html.et-dark .post.c7 .postBody textarea, html.et-dark .post.c7 .postBody select, html.et-dark .post.c8 .postBody input, html.et-dark .post.c8 .postBody textarea, html.et-dark .post.c8 .postBody select, html.et-dark .post.c9 .postBody input, html.et-dark .post.c9 .postBody textarea, html.et-dark .post.c9 .postBody select, html.et-dark .post.c10 .postBody input, html.et-dark .post.c10 .postBody textarea, html.et-dark .post.c10 .postBody select, html.et-dark .post.c11 .postBody input, html.et-dark .post.c11 .postBody textarea, html.et-dark .post.c11 .postBody select, html.et-dark .post.c12 .postBody input, html.et-dark .post.c12 .postBody textarea, html.et-dark .post.c12 .postBody select, html.et-dark .post.c13 .postBody input, html.et-dark .post.c13 .postBody textarea, html.et-dark .post.c13 .postBody select, html.et-dark .post.c14 .postBody input, html.et-dark .post.c14 .postBody textarea, html.et-dark .post.c14 .postBody select, html.et-dark .post.c15 .postBody input, html.et-dark .post.c15 .postBody textarea, html.et-dark .post.c15 .postBody select, html.et-dark .post.c16 .postBody input, html.et-dark .post.c16 .postBody textarea, html.et-dark .post.c16 .postBody select, html.et-dark .post.c17 .postBody input, html.et-dark .post.c17 .postBody textarea, html.et-dark .post.c17 .postBody select, html.et-dark .post.c18 .postBody input, html.et-dark .post.c18 .postBody textarea, html.et-dark .post.c18 .postBody select, html.et-dark .post.c19 .postBody input, html.et-dark .post.c19 .postBody textarea, html.et-dark .post.c19 .postBody select, html.et-dark .post.c20 .postBody input, html.et-dark .post.c20 .postBody textarea, html.et-dark .post.c20 .postBody select, html.et-dark .post.c21 .postBody input, html.et-dark .post.c21 .postBody textarea, html.et-dark .post.c21 .postBody select, html.et-dark .post.c22 .postBody input, html.et-dark .post.c22 .postBody textarea, html.et-dark .post.c22 .postBody select, html.et-dark .post.c23 .postBody input, html.et-dark .post.c23 .postBody textarea, html.et-dark .post.c23 .postBody select, html.et-dark .post.c24 .postBody input, html.et-dark .post.c24 .postBody textarea, html.et-dark .post.c24 .postBody select, html.et-dark .post.c25 .postBody input, html.et-dark .post.c25 .postBody textarea, html.et-dark .post.c25 .postBody select, html.et-dark .post.c26 .postBody input, html.et-dark .post.c26 .postBody textarea, html.et-dark .post.c26 .postBody select, html.et-dark .post.c27 .postBody input, html.et-dark .post.c27 .postBody textarea, html.et-dark .post.c27 .postBody select { background:#0f1115 !important; color:#e5e7eb !important; -webkit-text-fill-color:#e5e7eb !important; border-color:#3a4150 !important; }
+
+/* Match the speech-bubble pointer to the classic profile/body colors. */
+.post[class*="c"] .postContent:before { border-color:var(--profile-color); }
+.post[class*="c"] .postContent:after { border-color:var(--post-color); }
+html.et-dark .post[class*="c"] .postContent:before { border-color:var(--profile-color) !important; }
+html.et-dark .post[class*="c"] .postContent:after { border-color:var(--post-color) !important; }
+
+
+/* Final classic parity: the avatar column and its continuation share the profile color. */
+.post.side-l, .post.side-r {
+  background:var(--profile-color);
+  border-color:var(--profile-color);
+}
+.post.side-none { background:var(--post-color); }
+.post[class*="c"] .postContent:before {
+  border-top-color:transparent !important;
+  border-bottom-color:transparent !important;
+  border-left-color:transparent !important;
+  border-right-color:var(--profile-color) !important;
+}
+.post[class*="c"] .postContent:after {
+  border-top-color:transparent !important;
+  border-bottom-color:transparent !important;
+  border-left-color:transparent !important;
+  border-right-color:var(--post-color) !important;
+}
+.post .postBody a {
+  color:#2d4f98;
+  font-weight:600;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+.post .postBody a:hover { color:#1e2b43; }
+html.et-dark .post .postBody a {
+  color:#93c5fd !important;
+  -webkit-text-fill-color:#93c5fd !important;
+}
+html.et-dark .post.side-l,
+html.et-dark .post.side-r { background:var(--profile-color) !important; }
+html.et-dark .post.side-none { background:var(--post-color) !important; }
+html.et-dark .post[class*="c"] .postContent:before { border-right-color:var(--profile-color) !important; }
+html.et-dark .post[class*="c"] .postContent:after { border-right-color:var(--post-color) !important; }
+
+/* Reply/edit controls remain readable on the coloured panel. */
+.post .postFooter .button,
+.post .postHeader .controls a {
+  box-sizing:border-box;
+  max-width:100%;
+  white-space:normal;
+}
+.post .postFooter .postReply,
+.post .postFooter .postReply input { min-width:0; }
+html.et-dark .post .postFooter .button { color:#e5e7eb !important; }
+html.et-dark .post .postFooter .submit { color:#fff !important; }

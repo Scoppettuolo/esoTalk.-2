@@ -1,0 +1,12 @@
+.post-signature {
+	margin-top: 1em;
+	padding-top: 0.75em;
+	border-top: 1px dashed rgba(0,0,0,.12);
+	font-size: 0.9em;
+	color: #777;
+	line-height: 1.45;
+}
+.signature-input {
+	width: 100%;
+	min-height: 70px;
+}

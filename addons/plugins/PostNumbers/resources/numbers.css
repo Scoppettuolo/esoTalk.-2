@@ -1,0 +1,6 @@
+.post-number {
+	font-size: 0.85em;
+	color: #999 !important;
+	font-weight: 500;
+}
+.post-number:hover { color: #2563eb !important; }

@@ -1,0 +1,594 @@
+<?php
+// Copyright 2011 Toby Zerner, Simon Zerner
+// This file is part of esoTalk. Licensed under the GNU Affero General Public License v3.0 (AGPLv3). See LICENSE.txt.
+
+if (!defined("IN_ESOTALK")) exit;
+
+/**
+ * The Session model represents the current session and the current user. It provides functions for manipluating
+ * and managing the session and user, such as storing data, logging in and out, and validating tokens.
+ *
+ * @package esoTalk
+ */
+#[\AllowDynamicProperties]
+class ETSession extends ETModel {
+
+
+/**
+ * An array of the current user's details, or null if they're not logged in.
+ * @var array
+ */
+public $user;
+
+
+/**
+ * The current user's member ID, or null if they're not logged in.
+ * @var int
+ */
+public $userId;
+
+
+/**
+ * The current valid token.
+ * @var string
+ */
+public $token;
+
+
+/**
+ * The IP address of the current user.
+ * @var string
+ */
+public $ip;
+
+
+/**
+ * Class constructor: starts the session and initializes class properties (ip, token, user, etc.)
+ *
+ * @return void
+ */
+public function __construct()
+{
+	// Start a session with modern cookie flags (HttpOnly, SameSite, Secure when HTTPS).
+	// A host application or an earlier bootstrap pass may already have started it.
+	if (session_status() !== PHP_SESSION_ACTIVE) {
+		session_name(C("esoTalk.cookie.name")."_session");
+		$secure = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off")
+			|| (isset($_SERVER["SERVER_PORT"]) && (int)$_SERVER["SERVER_PORT"] === 443)
+			|| C("esoTalk.https");
+		if (PHP_VERSION_ID >= 70300) {
+			session_set_cookie_params(array(
+				"lifetime" => 0,
+				"path" => C("esoTalk.cookie.path") ?: "/",
+				"domain" => C("esoTalk.cookie.domain") ?: "",
+				"secure" => (bool)$secure,
+				"httponly" => true,
+				"samesite" => "Lax"
+			));
+		} else {
+			session_set_cookie_params(0, C("esoTalk.cookie.path") ?: "/", C("esoTalk.cookie.domain") ?: "", (bool)$secure, true);
+		}
+		session_start();
+	}
+	if (empty($_SESSION["token"])) $this->regenerateToken();
+
+	// Complicate session highjacking - check the current user agent against the one that initiated the session.
+	$ua = isset($_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "";
+	$uaHash = hash("sha256", $ua);
+	if (!isset($_SESSION["userAgent"])) $_SESSION["userAgent"] = $uaHash;
+	elseif ($_SESSION["userAgent"] !== $uaHash && $_SESSION["userAgent"] !== md5($ua)) {
+		// Mismatch (allow one-time legacy md5 hashes from older sessions)
+		session_unset();
+		session_destroy();
+		session_write_close();
+		session_start();
+		$_SESSION["userAgent"] = $uaHash;
+		if (empty($_SESSION["token"])) $this->regenerateToken();
+	} elseif ($_SESSION["userAgent"] === md5($ua)) {
+		// Upgrade legacy hash in place
+		$_SESSION["userAgent"] = $uaHash;
+	}
+
+	// Set the class properties to reference session variables.
+	$this->token = &$_SESSION["token"];
+	$this->ip = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : "0.0.0.0";
+	$this->userId = &$_SESSION["userId"];
+
+	// If a persistent login cookie is set, attempt to log in.
+	// We use this implementation: http://jaspan.com/improved_persistent_login_cookie_best_practice
+	if (!$this->userId and ($cookie = $this->getCookie("persistent"))) {
+
+		// Get the token, series, and member ID from the cookie.
+		$token = substr($cookie, -32);
+		$series = substr($cookie, -64, 32);
+		$memberId = (int)substr($cookie, 0, -64);
+
+		// Get an entry in the database with this memberId and series.
+		$result = ET::SQL()
+			->select("*")
+			->from("cookie")
+			->where("memberId", $memberId)
+			->where("series", $series)
+			->exec();
+
+		// If a matching record exists...
+		if ($row = $result->firstRow() and $row["series"] == $series) {
+
+			// If the token doesn't match, the user's cookie has probably been stolen by someone else.
+			if ($row["token"] != $token) {
+
+				// Delete this member's cookie identifier for this series, so the attacker will not be able
+				// to log in again.
+				ET::SQL()->delete()->from("cookie")->where("memberId", $memberId)->where("series", $series)->exec();
+
+				// Add an error to the model.
+				$this->error("cookieAuthenticationTheft");
+
+			}
+
+			// Otherwise, authenticate the user.
+			else {
+				$this->loginWithMemberId($memberId);
+
+				// Generate a new token for the member.
+				$token = $this->createPersistentToken($memberId, $series);
+
+				// Set the cookie.
+				$this->setCookie("persistent", $memberId.$series.$token, time() + C("esoTalk.cookie.expire"));
+			}
+
+		}
+	}
+
+	// If there's a user logged in, get their user data.
+	if ($this->userId and C("esoTalk.installed")) $this->refreshUserData();
+}
+
+
+/**
+ * Pulls fresh user data from the database into the $user property.
+ *
+ * @return void
+ */
+public function refreshUserData()
+{
+	if (!$this->userId) return;
+	$this->user = ET::memberModel()->getById($this->userId);
+}
+
+
+/**
+ * Get the value of a specific preference for the currently logged in user.
+ *
+ * @return mixed
+ */
+public function preference($key, $default = false)
+{
+	return isset($this->user["preferences"][$key]) ? $this->user["preferences"][$key] : $default;
+}
+
+
+/**
+ * Set preferences for the current user.
+ *
+ * @param array $values An array of preferences to set.
+ * @return void
+ */
+public function setPreferences($values)
+{
+	if (!$this->userId) return;
+	$this->user["preferences"] = ET::memberModel()->setPreferences($this->user, $values);
+}
+
+
+/**
+ * Set up the session to be logged in with the given member.
+ *
+ * @param array $member The details of the member to log in with.
+ * @return bool true on success, false on error.
+ */
+protected function processLogin($member)
+{
+	// Enforce the selected registration gates independently.
+	$type = C("esoTalk.registration.requireConfirmation");
+	if (!$member["confirmed"] && $type === "email") {
+		$this->error("emailNotYetConfirmed");
+		return false;
+	}
+	if (!$member["confirmed"] && $type === "approval") {
+		$this->error("accountNotYetApproved");
+		return false;
+	}
+	if ($type === "email+approval") {
+		if (!$member["confirmed"]) {
+			$this->error("emailNotYetConfirmed");
+			return false;
+		}
+		if (isset($member["account"]) && $member["account"] === ACCOUNT_PENDING) {
+			$this->error("accountNotYetApproved");
+			return false;
+		}
+	}
+
+	// Assign the user ID to a SESSION variable.
+	$_SESSION["userId"] = $member["memberId"];
+	$this->user = $member;
+
+	// Regenerate the session ID and token to prevent session fixation.
+	$this->regenerateToken();
+
+	return true;
+}
+
+
+/**
+ * Log in the member with the specified ID.
+ *
+ * @param int $memberId The member ID.
+ * @return bool true on success, false on failure.
+ */
+public function loginWithMemberId($memberId)
+{
+	$member = ET::memberModel()->getById($memberId);
+	return $this->processLogin($member);
+}
+
+
+/**
+ * Log in the member with the specified username and password, and optionally set a persistent login cookie.
+ *
+ * @param string $username The username.
+ * @param string $password The password.
+ * @param bool $remember Whether or not to set a persistent login cookie.
+ * @return bool true on success, false on failure.
+ */
+public function login($name, $password, $remember = false)
+{
+	$return = $this->trigger("login", array($name, $password, $remember));
+	if (count($return)) return reset($return);
+
+	// Simple brute-force throttle (session + IP window).
+	$failKey = "loginFails";
+	$fails = (array) $this->getValue($failKey);
+	$now = time();
+	$fails = array_values(array_filter($fails, function ($t) use ($now) {
+		return is_numeric($t) && ($now - (int)$t) < 900; // 15 minutes
+	}));
+	if (count($fails) >= 8) {
+		$this->error("password", "loginThrottled");
+		return false;
+	}
+
+	// Get the member with this username or email.
+	$sql = ET::SQL()
+		->where("m.username=:username OR m.email=:email")
+		->bind(":username", $name)
+		->bind(":email", $name);
+	$tmp = ET::memberModel()->getWithSQL($sql); $member = $tmp ? reset($tmp) : null;
+
+	// Check that the password is correct.
+	if (!$member or !ET::memberModel()->checkPassword($password, $member["password"])) {
+		$fails[] = $now;
+		$this->store($failKey, $fails);
+		$this->error("password", "incorrectLogin");
+		return false;
+	}
+
+	// Clear failures on success.
+	$this->store($failKey, array());
+
+	// Upgrade legacy phpass / weak bcrypt cost to current password_hash on successful login.
+	$hash = $member["password"];
+	$needsRehash = (strpos($hash, '$P$') === 0 || strpos($hash, '$H$') === 0)
+		|| (function_exists("password_needs_rehash") && (
+			strpos($hash, '$2y$') === 0 || strpos($hash, '$2a$') === 0
+		) && password_needs_rehash($hash, PASSWORD_BCRYPT, array("cost" => 12)));
+	if ($needsRehash) {
+		try {
+			ET::memberModel()->updateById($member["memberId"], array(
+				"password" => ET::memberModel()->hashPassword($password)
+			));
+		} catch (Exception $e) {}
+	}
+
+	// Process the login.
+	$return = $this->processLogin($member);
+
+	// Set a persistent login "remember me" cookie?
+	if ($return === true and $remember) $this->setRememberCookie($this->userId);
+
+	return $return;
+}
+
+
+/**
+ * Create or update a memberId-series-token triplet in the cookie table that can be used to verify a cookie.
+ *
+ * @param int $memberId The ID of the member that the cookie is being set for.
+ * @param string $series The series identifier.
+ * @return string $token The token that was generated.
+ */
+protected function createPersistentToken($memberId, $series)
+{
+	// Generate a new token.
+	$token = generateSecureToken(16);
+
+	// Insert or update it in the database.
+	ET::SQL()->insert("cookie")->set(array(
+		"memberId" => $memberId,
+		"series" => $series,
+		"token" => $token
+	))->setOnDuplicateKey("token", $token)->exec();
+
+	return $token;
+}
+
+
+/**
+ * Set a cookie with a standardized name prefix.
+ *
+ * @param string $name The name of the cookie.
+ * @param string $value The value of the cookie.
+ * @param int $expire The time before the cookie will expire.
+ */
+public function setCookie($name, $value, $expire = 0)
+{
+	$path = C("esoTalk.cookie.path", getWebPath(""));
+	$domain = C("esoTalk.cookie.domain");
+	$secure = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off")
+		|| (isset($_SERVER["SERVER_PORT"]) && (int)$_SERVER["SERVER_PORT"] === 443)
+		|| C("esoTalk.https");
+	$cookieName = C("esoTalk.cookie.name")."_".$name;
+	if (PHP_VERSION_ID >= 70300) {
+		return setcookie($cookieName, $value, array(
+			"expires" => $expire,
+			"path" => $path ?: "/",
+			"domain" => $domain ?: "",
+			"secure" => (bool)$secure,
+			"httponly" => true,
+			"samesite" => "Lax"
+		));
+	}
+	return setcookie($cookieName, $value, $expire, $path ?: "/", $domain ?: "", (bool)$secure, true);
+}
+
+
+/**
+ * Set a cookie to remember a user.
+ *
+ * @param int $userId The ID of the user to remember.
+ */
+public function setRememberCookie($userId)
+{
+	// We use this implementation: http://jaspan.com/improved_persistent_login_cookie_best_practice
+
+	// Generate a new series identifier, and a token.
+	$series = generateSecureToken(16);
+	$token = $this->createPersistentToken($userId, $series);
+
+	// Set the cookie.
+	$this->setCookie("persistent", $userId.$series.$token, time() + C("esoTalk.cookie.expire"));
+}
+
+
+/**
+ * Get the value of a cookie set by $this->setCookie().
+ *
+ * @param string $name The name of the cookie.
+ * @param string $default The value to return if the cookie is not set.
+ * @return string
+ */
+public function getCookie($name, $default = null)
+{
+	$name = C("esoTalk.cookie.name")."_".$name;
+	return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $default;
+}
+
+
+/**
+ * Log the current user out.
+ *
+ * @return void
+ */
+public function logout()
+{
+	// Destroy session data and regenerate the unique token to prevent session fixation.
+	unset($_SESSION["userId"]);
+	$this->regenerateToken();
+
+	// Eat the persistent login cookie. OM NOM NOM
+	if ($this->getCookie("persistent")) $this->setCookie("persistent", false, -1);
+
+	$this->trigger("logout");
+}
+
+
+/**
+ * Update the current session's local user data.
+ *
+ * @param string $key The key to set.
+ * @param mixed $value The value to set.
+ * @return void
+ */
+public function updateUser($key, $value)
+{
+	$this->user[$key] = $value;
+}
+
+
+/**
+ * Check a token against the current valid token.
+ *
+ * @param string $token The token to check.
+ * @return bool Whether or not the token is valid.
+ */
+public function validateToken($token)
+{
+	return $token == $this->token;
+}
+
+
+/**
+ * Regenerate the session ID, token, and store the user's agent.
+ *
+ * @return void
+ */
+public function regenerateToken()
+{
+	session_regenerate_id(true);
+	$_SESSION["token"] = substr(generateSecureToken(16), 0, 32);
+	$_SESSION["userAgent"] = hash("sha256", isset($_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
+}
+
+
+/**
+ * Push an item onto the top of the navigation breadcrumb stack.
+ *
+ * When adding an item to the navigation breadcrumb stack, we first go through all the items in the stack and
+ * check if there's an item with the same ID. If it is found, we go back to that point in the breadcrumb,
+ * discarding everything afterwards.
+ *
+ * @param string $id The navigation ID (a unique ID for this item in the breadcrumb.)
+ * @param string $type The type of page this is (search/conversation/etc - will be used in the "back to [type]" text.)
+ * @param string $url The URL to this page.
+ * @return void
+ */
+public function pushNavigation($id, $type, $url)
+{
+	$navigation = $this->getValue("navigation");
+	if (!is_array($navigation)) $navigation = array();
+
+	// Look for an item with this $id that might already by in the navigation. If found, delete everything after it.
+	foreach ($navigation as $k => $item) {
+		if ($item["id"] == $id) {
+			array_splice($navigation, $k);
+			break;
+		}
+	}
+	$navigation[] = array("id" => $id, "type" => $type, "url" => $url);
+
+	$this->store("navigation", $navigation);
+}
+
+
+/**
+ * Get the item that is on top of the navigation stack. The navigation ID of the current page will be used to
+ * make sure the item returned isn't the item for the current page.
+ *
+ * @param string $currentId The unqiue navigation ID of the current page.
+ * @return bool|array The navigation item, or false if there is none (if the current page is the top.)
+ */
+public function getNavigation($currentId)
+{
+	$navigation = $this->getValue("navigation");
+	if (!empty($navigation)) {
+		$return = end($navigation);
+		if ($return["id"] == $currentId) $return = prev($navigation);
+		return $return;
+	}
+	else return false;
+}
+
+
+/**
+ * Return whether or not the current user is an administrator.
+ *
+ * @return bool
+ */
+public function isAdmin()
+{
+	return (is_array($this->user) && isset($this->user["account"]) && $this->user["account"] == ACCOUNT_ADMINISTRATOR) || (int)$this->userId == (int)C("esoTalk.rootAdmin");
+}
+
+
+/**
+ * Return whether or not the current user is suspended.
+ *
+ * @return bool
+ */
+public function isSuspended()
+{
+	return is_array($this->user) && isset($this->user["account"]) && $this->user["account"] == ACCOUNT_SUSPENDED;
+}
+
+
+/**
+ * Return whether or not the current user is flooding.
+ *
+ * @return bool
+ */
+public function isFlooding()
+{
+	if (C("esoTalk.conversation.timeBetweenPosts") <= 0) return false;
+	$limit = (int) C("esoTalk.conversation.timeBetweenPosts");
+
+	// Fast path: session stamp after a recent successful post (skips 2 MAX() queries).
+	$last = (int) $this->getValue("lastContentTime");
+	if ($last && (time() - $last) < $limit) return true;
+	if ($last && (time() - $last) >= $limit) return false;
+
+	$time = time() - $limit;
+	$recentConversation = (bool)ET::SQL()
+		->select("MAX(startTime)>$time")
+		->from("conversation")
+		->where("startMemberId", $this->userId)
+		->exec()
+		->result();
+	$recentPost = (bool)ET::SQL()
+		->select("MAX(time)>$time")
+		->from("post p")
+		->where("memberId", $this->userId)
+		->exec()
+		->result();
+
+	$flooding = $recentConversation or $recentPost;
+	if ($flooding) $this->store("lastContentTime", time());
+	return $flooding;
+}
+
+
+/**
+ * Get a list of group IDs which the current user is in.
+ *
+ * @return array
+ */
+public function getGroupIds()
+{
+	if ($this->user) return ET::groupModel()->getGroupIds($this->user["account"], array_keys($this->user["groups"]));
+	else return ET::groupModel()->getGroupIds(false, false);
+}
+
+
+/**
+ * Store a value in the session data store.
+ *
+ * @return void
+ */
+public function store($key, $value)
+{
+	$_SESSION[$key] = $value;
+}
+
+
+/**
+ * Retrieve a value from the session data store.
+ *
+ * @return mixed
+ */
+public function getValue($key, $default = null)
+{
+	return isset($_SESSION[$key]) ? $_SESSION[$key] : $default;
+}
+
+
+/**
+ * Remove a value from the session data store.
+ *
+ * @return void
+ */
+public function remove($key)
+{
+	unset($_SESSION[$key]);
+}
+
+}
